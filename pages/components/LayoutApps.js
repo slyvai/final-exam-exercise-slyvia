@@ -1,0 +1,87 @@
+import React, { useContext } from 'react';
+import { Layout, Menu, Switch, Typography } from 'antd';
+import Link from 'next/link';
+import { AppContext } from '../context/AppContext';
+
+const { Header, Sider, Content } = Layout;
+const { Title } = Typography;
+
+export default function AppLayout({ children }) {
+  const { theme, userName, setTheme } = useContext(AppContext);
+
+  const isDark = theme === "dark";
+
+  const toggleTheme = (checked) => setTheme(checked ? 'dark' : 'light');
+
+  const layoutStyle = {
+    minHeight: "100vh",
+    background: isDark ? "#0d0d0d" : "#f0f2f5",  
+    color: isDark ? "#fff" : "#000",
+  };
+
+  const headerStyle = {
+    background: isDark ? "#141414" : "#fff",
+    paddingLeft: 24,
+    borderBottom: isDark ? "1px solid #333" : "1px solid #ddd",
+  };
+
+  const contentStyle = {
+    margin: 24,
+    padding: 24,
+    background: isDark ? "#1f1f1f" : "#fff",   
+    color: isDark ? "#fff" : "#000",
+    borderRadius: 8,
+    minHeight: "80vh",
+  };
+
+  return (
+    <Layout style={layoutStyle}>
+      <Sider theme={theme} width={220}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            padding: "16px",
+          }}
+        >
+          <Title
+            level={4}
+            style={{ color: isDark ? "#fff" : "#000", margin: 0 }}
+          >
+            Students List
+          </Title>
+
+          <div style={{ color: isDark ? "#fff" : "#000" }}>
+            <div style={{ marginBottom: 8 }}>Theme</div>
+            <Switch checked={isDark} onChange={toggleTheme} />
+          </div>
+        </div>
+
+        <Menu theme={theme} mode="inline" defaultSelectedKeys={["students"]}>
+          <Menu.Item key="dashboard">
+            <Link href="/dashboard">Dashboard</Link>
+          </Menu.Item>
+
+          <Menu.Item key="students">
+            <Link href="/students">Students</Link>
+          </Menu.Item>
+        </Menu>
+      </Sider>
+
+      <Layout>
+        <Header style={headerStyle}>
+          <Title
+            level={4}
+            style={{ margin: 15, color: isDark ? "#fff" : "#000" }}
+          >
+            Welcome, {userName}
+          </Title>
+        </Header>
+
+        <Content style={contentStyle}>{children}</Content>
+      </Layout>
+    </Layout>
+  );
+}
