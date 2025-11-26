@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Layout, Menu, Switch, Typography } from 'antd';
 import Link from 'next/link';
-import { AppContext } from '../../context/AppContext';
+import { AppContext } from '../context/AppContext';
 
 const { Header, Sider, Content } = Layout;
 const { Title } = Typography;

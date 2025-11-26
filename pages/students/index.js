@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from 'antd';
-import StudentTable from '../components/StudentTable';
+import StudentTable from '../../components/StudentTable';
 
 
 export async function getServerSideProps() {

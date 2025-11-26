@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
 import { Table, Input, Select, Button, Space, Switch, List, Card } from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { AppContext } from '../../context/AppContext';
+import { AppContext } from '../context/AppContext';
 
 export default function StudentTable({ students, majors }) {
   const { selectedMajor } = useContext(AppContext);

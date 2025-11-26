@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { Skeleton, Card, Button, Modal, Form, Input, message } from "antd";
-import StudentDetailCard from "../components/StudentsDetailCard";
+import StudentDetailCard from "../../components/StudentsDetailCard";
 
 export default function StudentDetailPage({ student }) {
   const router = useRouter();
