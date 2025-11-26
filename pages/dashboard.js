@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { Card, Avatar, Row, Col, Skeleton, List} from "antd";
-import { AppContext } from './context/AppContext';
+import { AppContext } from '../context/AppContext';
 export async function getStaticPropsMajors() {
   const res = await fetch("https://dummyjson.com/products/categories?limit=10");
   const json = await res.json();
