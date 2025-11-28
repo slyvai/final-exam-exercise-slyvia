@@ -74,7 +74,7 @@ export default function AppLayout({ children }) {
           </div>
         </div>
 
-        <Menu theme={theme} mode="inline" defaultSelectedKeys={["students"]}>
+        <Menu theme={theme} mode="inline" defaultSelectedKeys={["dashboard"]}>
           <Menu.Item key="dashboard">
             <Link href="/dashboard">Dashboard</Link>
           </Menu.Item>
