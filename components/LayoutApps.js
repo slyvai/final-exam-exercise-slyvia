@@ -1,21 +1,39 @@
-import React, { useContext } from 'react';
-import { Layout, Menu, Switch, Typography } from 'antd';
+import React, { useContext, useState, useEffect } from 'react';
+import { Layout, Menu, Switch, Typography, Skeleton } from 'antd';
 import Link from 'next/link';
 import { AppContext } from '../context/AppContext';
+import { useRouter } from "next/router";
 
 const { Header, Sider, Content } = Layout;
 const { Title } = Typography;
 
 export default function AppLayout({ children }) {
   const { theme, userName, setTheme } = useContext(AppContext);
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const isDark = theme === "dark";
 
   const toggleTheme = (checked) => setTheme(checked ? 'dark' : 'light');
 
+  useEffect(() => {
+    const handleStart = () => setLoading(true);
+    const handleStop = () => setLoading(false);
+
+    router.events.on("routeChangeStart", handleStart);
+    router.events.on("routeChangeComplete", handleStop);
+    router.events.on("routeChangeError", handleStop);
+
+    return () => {
+      router.events.off("routeChangeStart", handleStart);
+      router.events.off("routeChangeComplete", handleStop);
+      router.events.off("routeChangeError", handleStop);
+    };
+  }, [router]);
+
   const layoutStyle = {
     minHeight: "100vh",
-    background: isDark ? "#0d0d0d" : "#f0f2f5",  
+    background: isDark ? "#0d0d0d" : "#f0f2f5",
     color: isDark ? "#fff" : "#000",
   };
 
@@ -28,7 +46,7 @@ export default function AppLayout({ children }) {
   const contentStyle = {
     margin: 24,
     padding: 24,
-    background: isDark ? "#1f1f1f" : "#fff",   
+    background: isDark ? "#1f1f1f" : "#fff",
     color: isDark ? "#fff" : "#000",
     borderRadius: 8,
     minHeight: "80vh",
@@ -46,10 +64,7 @@ export default function AppLayout({ children }) {
             padding: "16px",
           }}
         >
-          <Title
-            level={4}
-            style={{ color: isDark ? "#fff" : "#000", margin: 0 }}
-          >
+          <Title level={4} style={{ color: isDark ? "#fff" : "#000", margin: 0 }}>
             Students List
           </Title>
 
@@ -63,7 +78,6 @@ export default function AppLayout({ children }) {
           <Menu.Item key="dashboard">
             <Link href="/dashboard">Dashboard</Link>
           </Menu.Item>
-
           <Menu.Item key="students">
             <Link href="/students">Students</Link>
           </Menu.Item>
@@ -72,15 +86,18 @@ export default function AppLayout({ children }) {
 
       <Layout>
         <Header style={headerStyle}>
-          <Title
-            level={4}
-            style={{ margin: 15, color: isDark ? "#fff" : "#000" }}
-          >
+          <Title level={4} style={{ margin: 15, color: isDark ? "#fff" : "#000" }}>
             Welcome, {userName}
           </Title>
         </Header>
 
-        <Content style={contentStyle}>{children}</Content>
+        <Content style={contentStyle}>
+          {loading ? (
+            <Skeleton active paragraph={{ rows: 8 }} />
+          ) : (
+            children
+          )}
+        </Content>
       </Layout>
     </Layout>
   );
